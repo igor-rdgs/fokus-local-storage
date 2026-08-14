@@ -8,6 +8,7 @@ const btnCancelarFormulario = document.querySelector('.app__form-footer__button-
 const paragrafoDescricaoTarefaAtiva = document.querySelector('.app__section-active-task-description')
 
 const tarefas = JSON.parse(localStorage.getItem('tarefas')) || []
+let tarefaSelecionada = null
 
 function atualizarTarefas() {
     localStorage.setItem('tarefas', JSON.stringify(tarefas))
@@ -56,6 +57,14 @@ function criarElementoTarefa(tarefa) {
             .forEach(elemento => {
                 elemento.classList.remove('app__section-task-list-item-active')
             })
+
+        if (tarefaSelecionada == tarefa) {
+            paragrafoDescricaoTarefaAtiva.textContent = ''
+            tarefaSelecionada = null
+            return
+        }
+
+        tarefaSelecionada = tarefa
         paragrafoDescricaoTarefaAtiva.textContent = tarefa.descricao
         li.classList.add('app__section-task-list-item-active')
     }
