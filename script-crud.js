@@ -8,7 +8,9 @@ const btnCancelarFormulario = document.querySelector('.app__form-footer__button-
 const paragrafoDescricaoTarefaAtiva = document.querySelector('.app__section-active-task-description')
 
 const tarefas = JSON.parse(localStorage.getItem('tarefas')) || []
+
 let tarefaSelecionada = null
+let liTarefaSelecionada = null
 
 function atualizarTarefas() {
     localStorage.setItem('tarefas', JSON.stringify(tarefas))
@@ -61,10 +63,12 @@ function criarElementoTarefa(tarefa) {
         if (tarefaSelecionada == tarefa) {
             paragrafoDescricaoTarefaAtiva.textContent = ''
             tarefaSelecionada = null
+            liTarefaSelecionada = null
             return
         }
 
         tarefaSelecionada = tarefa
+        liTarefaSelecionada = li
         paragrafoDescricaoTarefaAtiva.textContent = tarefa.descricao
         li.classList.add('app__section-task-list-item-active')
     }
@@ -99,4 +103,12 @@ btnCancelarFormulario.addEventListener('click', limparFormulario)
 tarefas.forEach(tarefa => {
     const elementoTarefa = criarElementoTarefa(tarefa)
     ulTarefas.append(elementoTarefa)
+})
+
+document.addEventListener('FocoFinalizado', () => {
+    if (tarefaSelecionada && liTarefaSelecionada) {
+        liTarefaSelecionada.classList.remove('app__section-task-list-item-active')
+        liTarefaSelecionada.classList.add('app__section-task-list-item-complete')
+        liTarefaSelecionada.querySelector('button').setAttribute('disabled', 'disabled')
+    }
 })
